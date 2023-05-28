@@ -40,6 +40,8 @@ namespace SuperVeigar
                     data = new CharacterDataSJ();
                     break;
             }
+
+            data.Init();
         }
     }
 }

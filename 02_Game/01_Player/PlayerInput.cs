@@ -8,13 +8,15 @@ namespace SuperVeigar
         public bl_Joystick right;
         private Vector2 moveDirection = Vector2.zero;
         private Vector3 attackDirection = Vector2.zero;
-        private float attackAngle = 0f;
 
         public Vector2 MoveDirection()
         {
-            moveDirection.x = left.Horizontal;
-            moveDirection.y = left.Vertical;
-            return moveDirection;
+            // moveDirection.x = left.Horizontal;
+            // moveDirection.y = left.Vertical;
+            moveDirection.x = Input.GetAxis("Horizontal");
+            moveDirection.y = Input.GetAxis("Vertical");
+
+            return moveDirection * 5;
         }
 
         // Vector3.right 기준의 각도

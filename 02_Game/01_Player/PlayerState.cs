@@ -4,49 +4,57 @@ namespace SuperVeigar
 {
     public class PlayerState
     {
-        protected PlayerStateType nextStateType;
+        protected const float MOVE_SPEED = 0.5f;
+        protected const float MOVE_SPEED_FACTOR = 0.2f;
+        public PlayerStateType nextStateType;
+        protected Rigidbody2D rigidbody2D;
 
-        public virtual void Reset()
+        public virtual void Reset(Animator animator)
         {
 
         }
 
-        public virtual void UpdateState(Vector2 move, float attack, GameObject player, GameObject weapon)
+        public virtual void UpdateState(Vector2 move, float attack, GameObject player, GameObject weapon, int moveSpeed)
         {
-
+            if (GameService.Instance.isPlay == true)
+            {
+                SetFlip(move, player);
+                RotateWeapon(attack, player, weapon);
+            }
         }
 
         protected void RotateWeapon(float attack, GameObject player, GameObject weapon)
         {
+            // no touch
             if (attack == 0f)
             {
-                return;
+                weapon.transform.localEulerAngles = Vector3.zero;
             }
-            // 좌측 보고 있는 상황
+            // face to the left
             else if (player.transform.localScale.x < 0)
             {
-                // 상단
+                // upper
                 if (0f <= attack && attack < 180f)
                 {
                     float convertedAttack = 180f - attack;
                     weapon.transform.localEulerAngles = new Vector3(0f, 0f, Mathf.Clamp(convertedAttack, 0f, 90f));
                 }
-                // 하단
+                // lower
                 else
                 {
                     float convertedAttack = 180f - attack;
                     weapon.transform.localEulerAngles = new Vector3(0f, 0f, Mathf.Clamp(convertedAttack, -90f, 0f));
                 }
             }
-            // 우측 보고 있는 상황
+            // face to the right
             else
             {
-                // 상단
+                // upper
                 if (0f <= attack && attack < 180f)
                 {
                     weapon.transform.localEulerAngles = new Vector3(0f, 0f, Mathf.Clamp(attack, 0f, 90f));
                 }
-                // 하단
+                // lower
                 else
                 {
                     weapon.transform.localEulerAngles = new Vector3(0f, 0f, Mathf.Clamp(attack, 270f, 360f));
@@ -54,9 +62,33 @@ namespace SuperVeigar
             }
         }
 
+        protected void SetFlip(Vector2 move, GameObject player)
+        {
+            if (move.x < 0)
+            {
+                player.transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else if (move.x > 0)
+            {
+                player.transform.localScale = new Vector3(1, 1, 1);
+            }
+        }
+
         public virtual bool IsNextStateSwitched()
         {
             return false;
+        }
+
+        protected void SetRunOrStand(Vector2 move)
+        {
+            if (move != Vector2.zero)
+            {
+                nextStateType = PlayerStateType.Run;
+            }
+            else
+            {
+                nextStateType = PlayerStateType.Stand;
+            }
         }
     }
 }

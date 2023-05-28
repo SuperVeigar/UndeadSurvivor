@@ -22,6 +22,7 @@ namespace SuperVeigar
 
         private void Start()
         {
+            Init();
             BindView();
         }
 

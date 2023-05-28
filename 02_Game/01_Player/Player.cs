@@ -19,12 +19,15 @@ namespace SuperVeigar
 
         private void Update()
         {
-            playerStateMachine.UpdateState(input.MoveDirection(), input.AttackAngle());
+            playerStateMachine.UpdateState(input.MoveDirection(), input.AttackAngle(), data.GetMoveSpeed());
+
+            weapon.Fire();
         }
 
         private void Init()
         {
             playerSelector.SetCharacter(GameDataService.Instance.playerType, out data);
+
             weaponSelector.SetWeapon(GameDataService.Instance.weaponType, GameDataService.Instance.secondWeaponType, out weapon, out secondWeapon);
 
             playerStateMachine.Init(gameObject, weapon.gameObject);

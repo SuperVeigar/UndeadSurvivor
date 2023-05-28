@@ -4,32 +4,17 @@ namespace SuperVeigar
 {
     public class PlayerStateStand : PlayerState
     {
-        public override void Reset()
+        public override void Reset(Animator animator)
         {
             nextStateType = PlayerStateType.Stand;
+            animator.SetBool("Run", false);
         }
 
-        public override void UpdateState(Vector2 move, float attack, GameObject player, GameObject weapon)
+        public override void UpdateState(Vector2 move, float attack, GameObject player, GameObject weapon, int moveSpeed)
         {
-            if (move.x < 0)
-            {
-                player.transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else if(move.x > 0)
-            {
-                player.transform.localScale = new Vector3(1, 1, 1);
-            }
+            base.UpdateState(move, attack, player, weapon, moveSpeed);
 
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                player.transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                player.transform.localScale = new Vector3(1, 1, 1);
-            }
-
-            RotateWeapon(attack, player, weapon);
+            SetRunOrStand(move);
         }
 
         public override bool IsNextStateSwitched()
