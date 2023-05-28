@@ -18,39 +18,27 @@ namespace SuperVeigar
         public SpriteLibraryAsset sj;
         public SpriteLibrary spriteLibrary;
 
-        public void SetCharacter(PlayerType type)
+        public void SetCharacter(PlayerType type, out CharacterData data)
         {
             switch (type)
             {
+                default:
                 case PlayerType.PLAYER_CS:
                     spriteLibrary.spriteLibraryAsset = cs;
+                    data = new CharacterDataCS();
                     break;
                 case PlayerType.PLAYER_YH:
                     spriteLibrary.spriteLibraryAsset = yh;
+                    data = new CharacterDataYH();
                     break;
                 case PlayerType.PLAYER_MH:
                     spriteLibrary.spriteLibraryAsset = mh;
+                    data = new CharacterDataMH();
                     break;
                 case PlayerType.PLAYER_SJ:
                     spriteLibrary.spriteLibraryAsset = sj;
+                    data = new CharacterDataSJ();
                     break;
-            }
-        }
-
-        public CharacterData GetCharacterData(PlayerType type)
-        {
-            switch (type)
-            {
-                case PlayerType.PLAYER_CS:
-                    return new CharacterDataCS();
-                case PlayerType.PLAYER_YH:
-                    return new CharacterDataYH();
-                case PlayerType.PLAYER_MH:
-                    return new CharacterDataMH();
-                case PlayerType.PLAYER_SJ:
-                    return new CharacterDataSJ();
-                default:
-                    return null;
             }
         }
     }

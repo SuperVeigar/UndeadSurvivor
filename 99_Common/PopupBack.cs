@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace SuperVeigar
 {
-    public class PopupBack : MonoBehaviour
+    public class PopupBack : Popup
     {
 
         public Button backYes;

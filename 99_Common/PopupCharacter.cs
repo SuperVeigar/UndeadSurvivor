@@ -3,10 +3,8 @@ using UnityEngine.UI;
 
 namespace SuperVeigar
 {
-    public class PopupCharacter : MonoBehaviour
-    {
-        private readonly Color COLOR_UNSELECTED = new Color(0.3f, 0.3f, 0.3f);
-        private readonly Color COLOR_SELECTED = new Color(1f, 1f, 1f);
+    public class PopupCharacter : Popup
+    {        
         public Button select;
         public Button back;
         public Button cs;
