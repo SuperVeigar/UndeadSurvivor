@@ -4,7 +4,7 @@ namespace SuperVeigar
 {
     public class WeaponShotgun : Weapon
     {
-        private const float FIRE_ANGLE = 45f;
+        private const float FIRE_ANGLE = 35f;
 
         protected override void Init()
         {
@@ -41,6 +41,8 @@ namespace SuperVeigar
             rotation.eulerAngles = new Vector3(rotation.eulerAngles.x , rotation.eulerAngles.y, rotation.eulerAngles.z + angle);
 
             bullet.Fire(firePoint.position, rotation, data.GetAttack(), (float)data.GetAttackRange() * ATTACKRANGE_TO_DURATION);
+
+            audioSource.Play();
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace SuperVeigar
 {
@@ -35,6 +36,14 @@ namespace SuperVeigar
         public virtual Bullet GetBullet()
         {
             return this;
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Enemy") == true)
+            {
+                other.GetComponent<IDamageable>().Damage(attack);
+            }
         }
     }
 }

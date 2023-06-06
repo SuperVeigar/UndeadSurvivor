@@ -33,6 +33,8 @@ namespace SuperVeigar
             Bullet bullet = GetAvailableBullet().GetComponent<Bullet>().GetBullet();
 
             bullet.Fire(firePoint.position, firePoint.rotation, data.GetAttack(), (float)data.GetAttackRange() * ATTACKRANGE_TO_DURATION);
+
+            audioSource.Play();
         }
     }
 }

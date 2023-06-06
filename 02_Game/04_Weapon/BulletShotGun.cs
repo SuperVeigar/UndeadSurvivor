@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SuperVeigar
 {
-    public class BulletShotgun : Bullet
+    public class BulletShotGun : Bullet
     {
         public override void Fire(Vector2 startPosition, Quaternion startRotation, int attack, float duration)
         {

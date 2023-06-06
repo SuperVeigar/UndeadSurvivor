@@ -14,6 +14,7 @@ namespace SuperVeigar
         public Transform bulletParent;
         protected WeaponData data;
         protected bool isFireable;
+        protected AudioSource audioSource;
 
         private void Start()
         {
@@ -24,6 +25,7 @@ namespace SuperVeigar
         protected virtual void Init()
         {
             bullets = new List<GameObject>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         public virtual void Reset()

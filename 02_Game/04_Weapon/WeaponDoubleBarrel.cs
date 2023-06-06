@@ -5,7 +5,7 @@ namespace SuperVeigar
 {
     public class WeaponDoubleBarrel : Weapon
     {
-        private const float FIRE_POINT_Y = 0.2f;
+        private const float FIRE_POINT_Y = 0.25f;
         private const int SECOND_FIRE_DELAY = 300;
         
         protected override void Init()
@@ -43,11 +43,15 @@ namespace SuperVeigar
 
             bullet.Fire(position, firePoint.rotation, data.GetAttack(), (float)data.GetAttackRange() * ATTACKRANGE_TO_DURATION);
 
+            audioSource.Play();
+
             bullet = GetAvailableBullet().GetComponent<Bullet>().GetBullet();
 
             position = firePoint.position - Vector3.up * FIRE_POINT_Y;
 
             bullet.Fire(firePoint.position, firePoint.rotation, data.GetAttack(), (float)data.GetAttackRange() * ATTACKRANGE_TO_DURATION);
+
+            audioSource.Play();
         }
     }
 }

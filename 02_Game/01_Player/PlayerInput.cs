@@ -16,6 +16,8 @@ namespace SuperVeigar
             moveDirection.x = Input.GetAxis("Horizontal");
             moveDirection.y = Input.GetAxis("Vertical");
 
+            moveDirection.Normalize();
+
             return moveDirection * 5;
         }
 

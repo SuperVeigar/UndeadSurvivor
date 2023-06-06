@@ -1,6 +1,4 @@
-using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 namespace SuperVeigar
 {
@@ -20,12 +18,12 @@ namespace SuperVeigar
 
             backYes.onClick.AddListener(() =>
             {
-                SceneManager.LoadScene(Define.SCENE_TITLE);
+                GameService.Instance.MoveTitleScene();
             });
 
             backNo.onClick.AddListener(() =>
             {
-                GameService.Instance.isPlay = true;
+                GameService.Instance.Resume();
                 gameObject.SetActive(false);
             });
         }

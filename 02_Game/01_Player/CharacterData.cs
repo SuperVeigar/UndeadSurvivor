@@ -1,19 +1,29 @@
+using System.Collections.Generic;
+using UniRx;
+
 namespace SuperVeigar
 {
     public class CharacterData
     {
         protected int maxHP;
-        protected int currentHP;
+        protected ReactiveProperty<int> currentHP;
         protected int attack;
         protected int attackSpeed;
         protected int secondAttack;
         protected int secondAttackSpeed;
         protected int moveSpeed;
+        protected ReactiveProperty<int> exp;
+        protected ReactiveProperty<int> level;
         private CharacterDataDecorator decorator;
-        
+
         public virtual void Init()
         {
             decorator = new CharacterDataDecorator();
+            currentHP = new ReactiveProperty<int>(1);
+            exp = new ReactiveProperty<int>(0);
+            level = new ReactiveProperty<int>(1);
+
+            InitReactive();
             
             Reset();
             ResetCurrentHP();
@@ -21,7 +31,19 @@ namespace SuperVeigar
 
         public virtual void Reset()
         {
+            exp.Value = 0;
+            level.Value = 1;
+
             decorator.Reset();
+        }
+
+        private void InitReactive()
+        {
+            currentHP.Subscribe(hp => UIService.Instance.UpdateHP((float)GetCurrentHP() / (float)GetMaxHP()));
+            
+            exp.Subscribe(x => UIService.Instance.UpdateEXP(exp.Value, CharacterEXPData.expData[level.Value - 1]));
+            
+            level.Subscribe(lv => UIService.Instance.UpdateLevel(level.Value));
         }
 
         public int GetMaxHP()
@@ -29,20 +51,20 @@ namespace SuperVeigar
             return maxHP + decorator.maxHP;
         }
 
-        public int GetCurrentHP() 
+        public int GetCurrentHP()
         {
-            return currentHP;
+            return currentHP.Value;
         }
 
         public void AddCurrentHP(int hp)
         {
-            currentHP += hp;
+            currentHP.Value += hp;
 
-            if (hp < 0)
+            if (currentHP.Value < 0)
             {
-                hp = 0;
+                currentHP.Value = 0;
             }
-            else if (hp > GetMaxHP())
+            else if (currentHP.Value > GetMaxHP())
             {
                 ResetCurrentHP();
             }
@@ -50,7 +72,13 @@ namespace SuperVeigar
 
         public void ResetCurrentHP()
         {
-            currentHP = GetMaxHP();
+            currentHP.Value = GetMaxHP();
+        }
+
+        public void AddMaxHP(int hp)
+        {
+            currentHP.Value += hp;
+            decorator.maxHP += hp;
         }
 
         public int GetAttack()
@@ -102,6 +130,57 @@ namespace SuperVeigar
         {
             decorator.moveSpeed += speed;
         }
+
+        public int GetEXP()
+        {
+            return exp.Value;
+        }
+
+        public void AddEXP(int exp)
+        {
+            if (exp > 0)
+            {
+                this.exp.Value += exp;
+
+                CheckLevelUp();
+            }
+            else
+            {
+                this.exp.Value = 0;
+                LevelUp();
+            }
+        }
+
+        private void LevelUp()
+        {            
+            level.Value++;
+            
+            GameSoundService.Instance.Play(GameSoundType.LevelUp);
+
+            UIService.Instance.SetActivePopupBack(PopupType.PopupLevelUp, true);
+        }
+
+        public int GetLevel()
+        {
+            return level.Value;
+        }
+
+        private void CheckLevelUp()
+        {
+            while (true)
+            {
+                if (exp.Value >= CharacterEXPData.expData[level.Value - 1])
+                {
+
+                    exp.Value -= CharacterEXPData.expData[level.Value - 1];
+                    LevelUp();
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
     }
 
     public class CharacterDataDecorator
@@ -130,7 +209,7 @@ namespace SuperVeigar
         {
             base.Reset();
 
-            maxHP = 50;
+            maxHP = 99950;
             attack = 0;
             attackSpeed = 0;
             secondAttack = 4;
@@ -181,6 +260,16 @@ namespace SuperVeigar
             secondAttack = 3;
             secondAttackSpeed = 3;
             moveSpeed = 2;
+        }
+    }
+
+    public static class CharacterEXPData
+    {
+        public static List<int> expData;
+
+        static CharacterEXPData()
+        {
+            expData = new List<int>() { 5, 15, 35, 65, 105, 155, 215, 285, 365, 455, 555, 665, 785, 915, 1055, 1205, 1365, 1535, 1715, 1905, 2105, 2315, 2535, 2765, 3005, 3255, 3515, 3785, 4065, 4355 };
         }
     }
 }

@@ -8,6 +8,7 @@ namespace SuperVeigar
         protected const float MOVE_SPEED_FACTOR = 0.2f;
         public PlayerStateType nextStateType;
         protected Rigidbody2D rigidbody2D;
+        protected Animator animator;
 
         public virtual void Reset(Animator animator)
         {
@@ -16,22 +17,22 @@ namespace SuperVeigar
 
         public virtual void UpdateState(Vector2 move, float attack, GameObject player, GameObject weapon, int moveSpeed)
         {
-            if (GameService.Instance.isPlay == true)
+            if (GameService.Instance.IsPlay() == true)
             {
-                SetFlip(move, player);
+                if (attack == 0)
+                {
+                    return;
+                }
+
+                SetFlip(attack, player);
                 RotateWeapon(attack, player, weapon);
             }
         }
 
         protected void RotateWeapon(float attack, GameObject player, GameObject weapon)
         {
-            // no touch
-            if (attack == 0f)
-            {
-                weapon.transform.localEulerAngles = Vector3.zero;
-            }
             // face to the left
-            else if (player.transform.localScale.x < 0)
+            if (player.transform.localScale.x < 0)
             {
                 // upper
                 if (0f <= attack && attack < 180f)
@@ -62,15 +63,15 @@ namespace SuperVeigar
             }
         }
 
-        protected void SetFlip(Vector2 move, GameObject player)
+        protected void SetFlip(float attack, GameObject player)
         {
-            if (move.x < 0)
-            {
-                player.transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else if (move.x > 0)
+            if (attack <= 90 || attack > 270)
             {
                 player.transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                player.transform.localScale = new Vector3(-1, 1, 1);
             }
         }
 
