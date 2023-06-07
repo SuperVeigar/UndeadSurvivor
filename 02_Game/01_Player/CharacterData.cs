@@ -209,7 +209,7 @@ namespace SuperVeigar
         {
             base.Reset();
 
-            maxHP = 99950;
+            maxHP = 50;
             attack = 0;
             attackSpeed = 0;
             secondAttack = 4;

@@ -36,26 +36,37 @@ namespace SuperVeigar
             }            
         }
 
+        private void OnDestroy()
+        {
+            GameDataService.Instance.playerData = null;
+            GameDataService.Instance.weaponData = null;
+        }
+
         private void Init()
         {
             audioSource = GetComponent<AudioSource>();
 
             playerSelector.SetCharacter(GameDataService.Instance.playerType, out data);
 
+            GameDataService.Instance.playerData = data;
+
             weaponSelector.SetWeapon(GameDataService.Instance.weaponType, GameDataService.Instance.secondWeaponType, out weapon, out secondWeapon);
+
+            GameDataService.Instance.weaponData = weapon.GetWeaponData();
 
             playerStateMachine.Init(gameObject, weapon.gameObject);
             
             UpdateHPPosition();
         }
 
-        private void Reset()
+        public void Reset()
         {
             weapon.gameObject.SetActive(true);
             secondWeapon.gameObject.SetActive(true);
 
             data.Reset();
             data.ResetCurrentHP();
+            weapon.Reset();
         }
 
         public void Damage(int damage)
@@ -91,6 +102,12 @@ namespace SuperVeigar
             {
                 collider.gameObject.GetComponent<ICollectable>().Collect(data);
             }
+        }
+
+        // Test
+        public void LevelUp()
+        {
+            data.AddEXP(0);
         }
     }
 }

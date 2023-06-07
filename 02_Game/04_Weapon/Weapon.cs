@@ -31,6 +31,11 @@ namespace SuperVeigar
         public virtual void Reset()
         {
             isFireable = true;
+
+            if (data != null)
+            {
+                data.Reset();
+            }
         }
 
         public virtual Weapon GetWeapon()
@@ -73,6 +78,11 @@ namespace SuperVeigar
 
                 return bullets[bullets.Count - 1];
             }
+        }
+
+        public WeaponData GetWeaponData()
+        {
+            return data;
         }
     }
 }

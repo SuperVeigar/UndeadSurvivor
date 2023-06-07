@@ -18,14 +18,29 @@ namespace SuperVeigar
             return attack + decorator.attack;
         }
 
+        public void AddAttack(int attack)
+        {
+            decorator.attack += attack;
+        }
+
         public int GetAttackSpeed()
         {
             return attackSpeed + decorator.attackSpeed;
         }
 
+        public void AddAttackSpeed(int attackSpeed)
+        {
+            decorator.attackSpeed += attackSpeed;
+        }
+
         public int GetAttackRange()
         {
             return attackRange + decorator.attackRange;
+        }
+
+        public void AddAttackRange(int attackRange)
+        {
+            decorator.attackRange += attackRange;
         }
 
         public virtual void Reset()
